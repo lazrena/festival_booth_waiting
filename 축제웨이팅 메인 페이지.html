@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>축제웨이팅 – 대학교 축제 부스 웨이팅 플랫폼</title>
+<style>
+:root{--bg:#fffaf5;--surface:#fff;--text:#2a2230;--muted:#6f6577;--primary:#ff5a4e;--primary-t:#fff;--accent:#ffe9dc;--line:#f0e2d8;--ok:#1f9d63;--warn:#d98a00;--hot:#e0392d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17131b;--surface:#221c28;--text:#f4eef7;--muted:#a99fb3;--primary:#ff6f63;--primary-t:#1a0f0e;--accent:#33242a;--line:#3a3042;--ok:#4cd08f;--warn:#f0b43c;--hot:#ff7a6e;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--primary)}
+nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:14px}
+.hero{text-align:center;padding:48px 0 40px}
+.hero h1{font-size:clamp(28px,6vw,44px);line-height:1.25;margin:0 0 12px}
+.hero h1 em{font-style:normal;color:var(--primary)}
+.hero p{color:var(--muted);margin:0 auto 28px;max-width:520px}
+.search{display:flex;gap:8px;max-width:520px;margin:0 auto;flex-wrap:wrap}
+select,button{font:inherit;border-radius:12px}
+select{flex:1 1 220px;padding:14px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+button{padding:14px 22px;border:0;background:var(--primary);color:var(--primary-t);font-weight:700;cursor:pointer}
+button.ghost{background:var(--accent);color:var(--text);padding:8px 14px;font-size:14px}
+#msg{margin-top:16px;min-height:24px;color:var(--ok);font-weight:600}
+h2{font-size:22px;margin:48px 0 16px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{margin:6px 0 4px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px}
+.ico{font-size:26px}
+.steps{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));counter-reset:s}
+.step{background:var(--accent);border-radius:16px;padding:18px;counter-increment:s}
+.step::before{content:counter(s);display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--primary);color:var(--primary-t);font-weight:800;margin-bottom:8px}
+.step b{display:block}.step span{color:var(--muted);font-size:14px}
+.booth{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.tag{font-size:12px;color:var(--muted)}
+.wait{text-align:right;font-weight:800;font-size:18px}
+.wait small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.hot{color:var(--hot)}.mid{color:var(--warn)}.low{color:var(--ok)}
+.seat{font-size:13px;color:var(--muted);margin-top:8px}
+footer{margin:56px 0 24px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">축제<span>웨이팅</span></div>
+  <nav><a href="#features">기능</a><a href="#flow">이용 방법</a><a href="#booths">인기 부스</a></nav>
+</header>
+
+<section class="hero">
+  <h1>줄 서지 말고,<br><em>축제를 즐기세요</em></h1>
+  <p>우리 학교 축제 부스의 대기 현황을 한눈에 보고, 미리 웨이팅을 등록하세요.</p>
+  <div class="search">
+    <select id="uni" aria-label="대학교 선택">
+      <option value="">대학교를 선택하세요</option>
+      <option>경북대학교</option>
+      <option>영남대학교</option>
+      <option>계명대학교</option>
+      <option>대구대학교</option>
+      <option>서울대학교</option>
+      <option>연세대학교</option>
+      <option>고려대학교</option>
+    </select>
+    <button id="go" type="button">축제 보러가기</button>
+  </div>
+  <div id="msg" role="status"></div>
+</section>
+
+<section id="features">
+  <h2>주요 기능</h2>
+  <div class="grid">
+    <div class="card"><div class="ico">🗺️</div><h3>축제 부스 지도</h3><p>축제장 배치도를 보고 부스 위치를 바로 확인해요.</p></div>
+    <div class="card"><div class="ico">🍢</div><h3>부스 상세 정보</h3><p>부스 이름, 번호, 메뉴, 가격, 사진을 확인해요.</p></div>
+    <div class="card"><div class="ico">⏱️</div><h3>실시간 웨이팅</h3><p>부스별 대기 인원과 예상 대기 시간을 보여줘요.</p></div>
+    <div class="card"><div class="ico">🪑</div><h3>잔여 좌석</h3><p>지금 이용 가능한 좌석 수를 확인해요.</p></div>
+    <div class="card"><div class="ico">🛠️</div><h3>관리자 기능</h3><p>부스 운영자가 메뉴, 좌석, 대기 현황을 관리해요.</p></div>
+  </div>
+</section>
+
+<section id="flow">
+  <h2>이렇게 이용해요</h2>
+  <div class="steps">
+    <div class="step"><b>대학교 선택</b><span>원하는 학교를 골라요</span></div>
+    <div class="step"><b>축제 페이지</b><span>배치도와 부스 목록 확인</span></div>
+    <div class="step"><b>부스 정보 확인</b><span>메뉴·가격·대기 현황 비교</span></div>
+    <div class="step"><b>웨이팅 등록</b><span>순서가 되면 방문하기</span></div>
+  </div>
+</section>
+
+<section id="booths">
+  <h2>지금 인기 있는 부스 <small class="tag">(예시 데이터)</small></h2>
+  <div class="grid" id="list"></div>
+</section>
+
+<footer>대학교 축제 부스 웨이팅 플랫폼 · MVP 개발 중 · Python · Streamlit · GitHub 팀 프로젝트</footer>
+</div>
+
+<script>
+var booths=[
+  {no:12,name:"컴공 주점 ‘버그잡이’",menu:"김치전 · 8,000원",wait:18,min:45,seat:0},
+  {no:5,name:"경영학과 닭꼬치",menu:"닭꼬치 · 3,000원",wait:7,min:15,seat:4},
+  {no:21,name:"디자인과 핸드메이드 카페",menu:"아이스티 · 2,500원",wait:2,min:5,seat:12},
+  {no:8,name:"동아리 연합 떡볶이",menu:"떡볶이 · 5,000원",wait:11,min:25,seat:2}
+];
+var list=document.getElementById("list");
+booths.forEach(function(b){
+  var c=b.wait>=15?"hot":(b.wait>=5?"mid":"low");
+  var d=document.createElement("div");
+  d.className="card";
+  d.innerHTML='<div class="booth"><div><div class="tag">부스 '+b.no+'번</div><h3>'+b.name+'</h3><p>'+b.menu+'</p></div>'
+   +'<div class="wait '+c+'">'+b.wait+'팀<small>약 '+b.min+'분</small></div></div>'
+   +'<div class="seat">잔여 좌석 '+b.seat+'석</div>'
+   +'<div style="margin-top:12px"><button class="ghost" type="button">웨이팅 등록</button></div>';
+  d.querySelector("button").onclick=function(){alert("부스 "+b.no+"번 웨이팅 등록 화면은 MVP에서 구현할 예정이에요.");};
+  list.appendChild(d);
+});
+document.getElementById("go").onclick=function(){
+  var v=document.getElementById("uni").value,m=document.getElementById("msg");
+  m.style.color=v?"var(--ok)":"var(--hot)";
+  m.textContent=v?v+" 축제 페이지로 이동할 예정이에요! (데모)":"먼저 대학교를 선택해 주세요.";
+};
+</script>
+</body>
+</html>
